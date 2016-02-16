@@ -1,0 +1,23 @@
+# This file is auto-generated during the composer install
+parameters:    
+    database_driver: pdo_mysql
+    database_host: 127.0.0.1
+    database_port: null
+    database_name: electrodiesel
+    database_user: root
+    database_password: 1q2w3e4r
+    mailer_transport: smtp
+    mailer_host: 127.0.0.1
+    mailer_user: null
+    mailer_password: null
+    locale: es
+    secret: f71d368d0f6e2279b44616682d15556acbaccdd7
+    debug_toolbar: true
+    debug_redirects: false
+    use_assetic_controller: true
+    anfler.directorio.imagenes: '%kernel.root_dir%/../web/uploads/images/'
+    anfler.directorio.pdf: '%kernel.root_dir%/../web/pdf/'
+    sys_logo: /images/logo.png
+    sys_logo_txt: ''
+    sys_logo_url: 'http://electrodiesel.com.ar/app_dev.php'
+    sys_nombre: 'Servicio Electrodiesel'
