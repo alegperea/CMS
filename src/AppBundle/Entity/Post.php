@@ -8,7 +8,7 @@ use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Entity(repositoryClass="AppBundle\Repository\PostRepository")
- * @ORM\Table(name="symfony_demo_post")
+ * @ORM\Table(name="post")
  *
  * Defines the properties of the Post entity to represent the blog posts.
  * See http://symfony.com/doc/current/book/doctrine.html#creating-an-entity-class
@@ -48,17 +48,28 @@ class Post
 
     /**
      * @ORM\Column(type="string")
+     */
+    private $alias;
+    
+    /**
+     * @ORM\Column(type="string")
      * @Assert\NotBlank(message="post.blank_summary")
      */
-    private $summary;
+    private $introtext;
 
     /**
      * @ORM\Column(type="text")
      * @Assert\NotBlank(message="post.blank_content")
      * @Assert\Length(min = "10", minMessage = "post.too_short_content")
      */
-    private $content;
+    private $fulltext;
 
+    /**
+     * @ORM\Column(type="integer")
+     * @Assert\NotBlank(message="post.blank_summary")
+     */
+    private $state;
+    
     /**
      * @ORM\Column(type="string")
      * @Assert\Email()
@@ -80,6 +91,12 @@ class Post
      * @ORM\OrderBy({"publishedAt" = "DESC"})
      */
     private $comments;
+    
+    /**
+     * @ORM\Column(type="string")
+     * @Assert\NotBlank(message="post.blank_summary")
+     */
+    private $images;
 
     public function __construct()
     {
@@ -112,14 +129,14 @@ class Post
         $this->slug = $slug;
     }
 
-    public function getContent()
+    public function getFullText()
     {
-        return $this->content;
+        return $this->fulltext;
     }
 
-    public function setContent($content)
+    public function setFullText($fulltext)
     {
-        $this->content = $content;
+        $this->fulltext = $fulltext;
     }
 
     public function getAuthorEmail()
@@ -131,7 +148,39 @@ class Post
     {
         $this->authorEmail = $authorEmail;
     }
+    
+    function getAlias() {
+        return $this->alias;
+    }
 
+    function getIntrotext() {
+        return $this->introtext;
+    }
+
+    function getState() {
+        return $this->state;
+    }
+
+    function getImages() {
+        return $this->images;
+    }
+
+    function setAlias($alias) {
+        $this->alias = $alias;
+    }
+
+    function setIntrotext($introtext) {
+        $this->introtext = $introtext;
+    }
+
+    function setState($state) {
+        $this->state = $state;
+    }
+
+    function setImages($images) {
+        $this->images = $images;
+    }
+    
     /**
      * Is the given User the author of this Post?
      *
@@ -171,13 +220,4 @@ class Post
         $comment->setPost(null);
     }
 
-    public function getSummary()
-    {
-        return $this->summary;
-    }
-
-    public function setSummary($summary)
-    {
-        $this->summary = $summary;
-    }
 }

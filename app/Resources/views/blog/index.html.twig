@@ -11,7 +11,7 @@
                 </a>
             </h2>
 
-            {{ post.summary|md2html }}
+            {{ post.alias|md2html }}
         </article>
     {% else %}
         <div class="well">{{ 'post.no_posts_found'|trans }}</div>
