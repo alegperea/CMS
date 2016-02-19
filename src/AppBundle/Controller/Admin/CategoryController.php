@@ -16,7 +16,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
-use AppBundle\Entity\Post;
+use AppBundle\Entity\Category;
 
 /**
  * Controller used to manage blog contents in the backend.
@@ -26,41 +26,32 @@ use AppBundle\Entity\Post;
  * existing bundles that let you generate ready-to-use backends without effort.
  * See http://knpbundles.com/keyword/admin
  *
- * @Route("/admin/blog")
+ * @Route("/admin/category")
  * @Security("has_role('ROLE_ADMIN')")
  *
  * @author Ryan Weaver <weaverryan@gmail.com>
  * @author Javier Eguiluz <javier.eguiluz@gmail.com>
  */
-class BlogController extends Controller
+class CategoryController extends Controller
 {
+    
     /**
-     * Lists all Post entities.
-     *
-     * This controller responds to two different routes with the same URL:
-     *   * 'admin_post_index' is the route with a name that follows the same
-     *     structure as the rest of the controllers of this class.
-     *   * 'admin_index' is a nice shortcut to the backend homepage. This allows
-     *     to create simpler links in the templates. Moreover, in the future we
-     *     could move this annotation to any other controller while maintaining
-     *     the route name and therefore, without breaking any existing link.
-     *
      * @Route("/", name="admin_index")
-     * @Route("/", name="admin_post_index")
+     * @Route("/", name="admin_category_index")
      * @Method("GET")
      */
     public function indexAction()
     {
         $entityManager = $this->getDoctrine()->getManager();
-        $posts = $entityManager->getRepository('AppBundle:Post')->findAll();
+        $categories = $entityManager->getRepository('AppBundle:Category')->findAll();
 
-        return $this->render('admin/blog/index.html.twig', array('posts' => $posts));
+        return $this->render('admin/category/index.html.twig', array('categories' => $categories));
     }
 
     /**
      * Creates a new Post entity.
      *
-     * @Route("/new", name="admin_post_new")
+     * @Route("/new", name="admin_category_new")
      * @Method({"GET", "POST"})
      *
      * NOTE: the Method annotation is optional, but it's a recommended practice
@@ -69,11 +60,11 @@ class BlogController extends Controller
      */
     public function newAction(Request $request)
     {
-        $post = new Post();
-        $post->setAuthorEmail($this->getUser()->getEmail());
+        $category = new Category();
+        $category->setAuthorEmail($this->getUser()->getEmail());
 
         // See http://symfony.com/doc/current/book/forms.html#submitting-forms-with-multiple-buttons
-        $form = $this->createForm('AppBundle\Form\PostType', $post)
+        $form = $this->createForm('AppBundle\Form\CategoryType', $category)
             ->add('saveAndCreateNew', 'Symfony\Component\Form\Extension\Core\Type\SubmitType');
 
         $form->handleRequest($request);
@@ -82,28 +73,28 @@ class BlogController extends Controller
         // isValid() method already checks whether the form is submitted.
         // However, we explicitly add it to improve code readability.
         // See http://symfony.com/doc/current/best_practices/forms.html#handling-form-submits
-        if ($form->isSubmitted() && $form->isValid()) {
-            $post->setSlug($this->get('slugger')->slugify($post->getTitle()));
+        if ($form->isSubmitted() && $form->isValid()) {        
+            $category->setSlug($this->get('slugger')->slugify($post->getTitle()));
 
             $entityManager = $this->getDoctrine()->getManager();
-            $entityManager->persist($post);
+            $entityManager->persist($category);
             $entityManager->flush();
 
             // Flash messages are used to notify the user about the result of the
             // actions. They are deleted automatically from the session as soon
             // as they are accessed.
             // See http://symfony.com/doc/current/book/controller.html#flash-messages
-            $this->addFlash('success', 'post.created_successfully');
+            $this->addFlash('success', 'category.created_successfully');
 
             if ($form->get('saveAndCreateNew')->isClicked()) {
-                return $this->redirectToRoute('admin_post_new');
+                return $this->redirectToRoute('admin_category_new');
             }
 
-            return $this->redirectToRoute('admin_post_index');
+            return $this->redirectToRoute('admin_category_index');
         }
 
-        return $this->render('admin/blog/new.html.twig', array(
-            'post' => $post,
+        return $this->render('admin/category/new.html.twig', array(
+            'category' => $category,
             'form' => $form->createView(),
         ));
     }
@@ -111,10 +102,10 @@ class BlogController extends Controller
     /**
      * Finds and displays a Post entity.
      *
-     * @Route("/{id}", requirements={"id" = "\d+"}, name="admin_post_show")
+     * @Route("/{id}", requirements={"id" = "\d+"}, name="admin_category_show")
      * @Method("GET")
      */
-    public function showAction(Post $post)
+    public function showAction(Category $category)
     {
         // This security check can also be performed:
         //   1. Using an annotation: @Security("post.isAuthor(user)")
@@ -125,8 +116,8 @@ class BlogController extends Controller
 
         $deleteForm = $this->createDeleteForm($post);
 
-        return $this->render('admin/blog/show.html.twig', array(
-            'post'        => $post,
+        return $this->render('admin/category/show.html.twig', array(
+            'category'        => $post,
             'delete_form' => $deleteForm->createView(),
         ));
     }
@@ -134,33 +125,33 @@ class BlogController extends Controller
     /**
      * Displays a form to edit an existing Post entity.
      *
-     * @Route("/{id}/edit", requirements={"id" = "\d+"}, name="admin_post_edit")
+     * @Route("/{id}/edit", requirements={"id" = "\d+"}, name="admin_category_edit")
      * @Method({"GET", "POST"})
      */
-    public function editAction(Post $post, Request $request)
+    public function editAction(Category $category, Request $request)
     {
-        if (null === $this->getUser() || !$post->isAuthor($this->getUser())) {
+        if (null === $this->getUser() || !$category->isAuthor($this->getUser())) {
             throw $this->createAccessDeniedException('Posts can only be edited by their authors.');
         }
 
         $entityManager = $this->getDoctrine()->getManager();
 
-        $editForm = $this->createForm('AppBundle\Form\PostType', $post);
-        $deleteForm = $this->createDeleteForm($post);
+        $editForm = $this->createForm('AppBundle\Form\CategoryType', $category);
+        $deleteForm = $this->createDeleteForm($category);
 
         $editForm->handleRequest($request);
 
         if ($editForm->isSubmitted() && $editForm->isValid()) {
-            $post->setSlug($this->get('slugger')->slugify($post->getTitle()));
+            $category->setSlug($this->get('slugger')->slugify($post->getTitle()));
             $entityManager->flush();
 
-            $this->addFlash('success', 'post.updated_successfully');
+            $this->addFlash('success', 'category.updated_successfully');
 
-            return $this->redirectToRoute('admin_post_edit', array('id' => $post->getId()));
+            return $this->redirectToRoute('admin_category_edit', array('id' => $category->getId()));
         }
 
-        return $this->render('admin/blog/edit.html.twig', array(
-            'post'        => $post,
+        return $this->render('admin/category/edit.html.twig', array(
+            'post'        => $category,
             'edit_form'   => $editForm->createView(),
             'delete_form' => $deleteForm->createView(),
         ));
@@ -169,7 +160,7 @@ class BlogController extends Controller
     /**
      * Deletes a Post entity.
      *
-     * @Route("/{id}", name="admin_post_delete")
+     * @Route("/{id}", name="admin_category_delete")
      * @Method("DELETE")
      * @Security("post.isAuthor(user)")
      *
@@ -177,25 +168,25 @@ class BlogController extends Controller
      * the authorization mechanism will prevent the user accessing this resource).
      * The isAuthor() method is defined in the AppBundle\Entity\Post entity.
      */
-    public function deleteAction(Request $request, Post $post)
+    public function deleteAction(Request $request, Category $category)
     {
-        $form = $this->createDeleteForm($post);
+        $form = $this->createDeleteForm($category);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
             $entityManager = $this->getDoctrine()->getManager();
 
-            $entityManager->remove($post);
+            $entityManager->remove($category);
             $entityManager->flush();
 
-            $this->addFlash('success', 'post.deleted_successfully');
+            $this->addFlash('success', 'category.deleted_successfully');
         }
 
-        return $this->redirectToRoute('admin_post_index');
+        return $this->redirectToRoute('admin_category_index');
     }
 
     /**
-     * Creates a form to delete a Post entity by id.
+     * Creates a form to delete a Category entity by id.
      *
      * This is necessary because browsers don't support HTTP methods different
      * from GET and POST. Since the controller that removes the blog posts expects
@@ -203,14 +194,14 @@ class BlogController extends Controller
      * HTTP DELETE method.
      * See http://symfony.com/doc/current/cookbook/routing/method_parameters.html.
      *
-     * @param Post $post The post object
+     * @param Category $category The category object
      *
      * @return \Symfony\Component\Form\Form The form
      */
-    private function createDeleteForm(Post $post)
+    private function createDeleteForm(Category $category)
     {
         return $this->createFormBuilder()
-            ->setAction($this->generateUrl('admin_post_delete', array('id' => $post->getId())))
+            ->setAction($this->generateUrl('admin_category_delete', array('id' => $category->getId())))
             ->setMethod('DELETE')
             ->getForm()
         ;

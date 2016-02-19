@@ -7,7 +7,7 @@
 <html>
     <head>
         <meta charset="UTF-8" />
-        <title>{% block title %}Symfony Demo application{% endblock %}</title>
+        <title>{% block title %}Electrodiesel Argentina{% endblock %}</title>
 
         {% block stylesheets %}
         {# uncomment the following lines to compile SCSS assets with Assetic
@@ -35,7 +35,7 @@
                     <div class="container">
                         <div class="navbar-header">
                             <a class="navbar-brand" href="{{ path('blog_index') }}">
-                                Symfony Demo
+                                Electrodiesel Argentina
                             </a>
 
                             <button type="button" class="navbar-toggle"
@@ -92,21 +92,12 @@
         <div class="container body-container">
             {% block body %}
                 <div class="row">
-                    <div id="main" class="col-sm-9">
+                    <div id="main" class="col-sm-12">
                         {{ include('default/_flash_messages.html.twig') }}
 
                         {% block main %}{% endblock %}
                     </div>
-
-                    <div id="sidebar" class="col-sm-3">
-                        {% block sidebar %}
-                            {{ render_esi(controller('FrameworkBundle:Template:template', {
-                                'template': 'blog/about.html.twig',
-                                'sharedAge': 600,
-                                '_locale': app.request.locale
-                            })) }}
-                        {% endblock %}
-                    </div>
+                   
                 </div>
             {% endblock %}
         </div>

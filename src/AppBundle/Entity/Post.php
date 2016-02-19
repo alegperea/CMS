@@ -62,7 +62,7 @@ class Post
      * @Assert\NotBlank(message="post.blank_content")
      * @Assert\Length(min = "10", minMessage = "post.too_short_content")
      */
-    private $fulltext;
+    private $body;
 
     /**
      * @ORM\Column(type="integer")
@@ -91,6 +91,34 @@ class Post
      * @ORM\OrderBy({"publishedAt" = "DESC"})
      */
     private $comments;
+    
+    
+    /**
+     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Category")
+    */
+    private $category;
+    
+    
+    /**
+     * @ORM\Column(type="integer", nullable=true)
+     */
+    private $precio;
+    
+    /**
+     * @ORM\Column(type="string", nullable=true)
+    */
+    private $marca;
+    
+    /**
+     * @ORM\Column(type="string", nullable=true)
+    */
+    private $equivalencias;
+    
+    /**
+     * @ORM\Column(type="datetime", nullable=true)
+     * @Assert\DateTime()
+     */
+    private $fechaActualizacion;
     
     /**
      * @ORM\Column(type="string")
@@ -129,14 +157,14 @@ class Post
         $this->slug = $slug;
     }
 
-    public function getFullText()
+    public function getBody()
     {
-        return $this->fulltext;
+        return $this->body;
     }
 
-    public function setFullText($fulltext)
+    public function setBody($body)
     {
-        $this->fulltext = $fulltext;
+        $this->body = $body;
     }
 
     public function getAuthorEmail()
@@ -219,5 +247,48 @@ class Post
         $this->comments->removeElement($comment);
         $comment->setPost(null);
     }
+    
+    function getCategory() {
+        return $this->category;
+    }
 
+    function getPrecio() {
+        return $this->precio;
+    }
+
+    function getMarca() {
+        return $this->marca;
+    }
+
+    function getEquivalencias() {
+        return $this->equivalencias;
+    }
+
+    function getFechaActualizacion() {
+        return $this->fechaActualizacion;
+    }
+
+    function setCategory($category) {
+        $this->category = $category;
+    }
+
+    function setPrecio($precio) {
+        $this->precio = $precio;
+    }
+
+    function setMarca($marca) {
+        $this->marca = $marca;
+    }
+
+    function setEquivalencias($equivalencias) {
+        $this->equivalencias = $equivalencias;
+    }
+
+    function setFechaActualizacion($fechaActualizacion) {
+        $this->fechaActualizacion = $fechaActualizacion;
+    }
+
+
+    
+    
 }

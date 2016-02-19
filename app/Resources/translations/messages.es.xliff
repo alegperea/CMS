@@ -159,8 +159,8 @@
             </trans-unit>
             <trans-unit id="action.back_to_list">
                 <source>action.back_to_list</source>
-                <target>Volver al listado de artículos</target>
-            </trans-unit>
+                <target>Volver al Admin</target>
+            </trans-unit>      
             <trans-unit id="action.publish_comment">
                 <source>action.publish_comment</source>
                 <target>Publicar comentario</target>
@@ -230,6 +230,10 @@
             <trans-unit id="menu.post_list">
                 <source>menu.post_list</source>
                 <target>Listado de artículos</target>
+            </trans-unit>
+            <trans-unit id="menu.category_list">
+                <source>menu.category_list</source>
+                <target>Listado de categorias</target>
             </trans-unit>
             <trans-unit id="menu.back_to_blog">
                 <source>menu.back_to_blog</source>

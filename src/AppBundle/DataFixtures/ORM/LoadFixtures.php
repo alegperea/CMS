@@ -51,15 +51,15 @@ class LoadFixtures implements FixtureInterface, ContainerAwareInterface
         $johnUser = new User();
         $johnUser->setUsername('john_user');
         $johnUser->setEmail('john_user@symfony.com');
-        $encodedPassword = $passwordEncoder->encodePassword($johnUser, 'kitten');
+        $encodedPassword = $passwordEncoder->encodePassword($johnUser, '1234');
         $johnUser->setPassword($encodedPassword);
         $manager->persist($johnUser);
 
         $annaAdmin = new User();
-        $annaAdmin->setUsername('anna_admin');
-        $annaAdmin->setEmail('anna_admin@symfony.com');
+        $annaAdmin->setUsername('admin');
+        $annaAdmin->setEmail('admin@symfony.com');
         $annaAdmin->setRoles(array('ROLE_ADMIN'));
-        $encodedPassword = $passwordEncoder->encodePassword($annaAdmin, 'kitten');
+        $encodedPassword = $passwordEncoder->encodePassword($annaAdmin, '1234');
         $annaAdmin->setPassword($encodedPassword);
         $manager->persist($annaAdmin);
 
@@ -74,7 +74,7 @@ class LoadFixtures implements FixtureInterface, ContainerAwareInterface
             $post->setAlias('Sed ut perspiciatis unde');
             $post->setIntrotext('Sed ut perspicantium, tocto beatae vitae dicta sunt explicabo. ');
             $post->setSlug($this->container->get('slugger')->slugify($post->getTitle()));
-            $post->setFullText('Sed ut is iste uasi architecto beatae vitae dicta sunt explicabo. ');
+            $post->setBody('Sed ut is iste uasi architecto beatae vitae dicta sunt explicabo. ');
             $post->setAuthorEmail('anna_admin@symfony.com');
             $post->setPublishedAt(new \DateTime('now - '.$i.'days'));
             $post->setState(1);
