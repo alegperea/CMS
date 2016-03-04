@@ -14,6 +14,8 @@ namespace AppBundle\Form;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use AppBundle\Entity\Category;
+use Doctrine\ORM\EntityRepository;
 
 /**
  * Defines the form used to create and manipulate blog posts.
@@ -43,10 +45,26 @@ class PostType extends AbstractType
                 'attr' => array('autofocus' => true),
                 'label' => 'label.title',
             ))
-            ->add('summary', 'Symfony\Component\Form\Extension\Core\Type\TextareaType', array('label' => 'label.summary'))
-            ->add('content', null, array(
+            ->add('introText', 'Symfony\Component\Form\Extension\Core\Type\TextareaType', array('label' => 'label.introText'))
+            ->add('body', null, array(
                 'attr' => array('rows' => 20),
                 'label' => 'label.content',
+            ))
+               
+            ->add('category', 'entity', array(
+                'class' => 'AppBundle:Category',
+                'query_builder' => function (EntityRepository $er) {
+                  return $er->createQueryBuilder('c')
+			  ->where('c.state = :state')
+			  ->setParameter('state', Category::activo)
+                          ->orderBy('c.title', 'ASC');
+                },
+                'label' => 'Seleccione categoria',
+                'empty_value' => ' - Seleccionar - ',
+                'attr' => array(
+                    'class' => 'categoria chosen'
+                ),
+                'required' => true
             ))
             ->add('authorEmail', null, array('label' => 'label.author_email'))
             ->add('publishedAt', 'AppBundle\Form\Type\DateTimePickerType', array(

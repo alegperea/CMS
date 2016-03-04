@@ -21,6 +21,9 @@ use Symfony\Component\Validator\Constraints as Assert;
  */
 class Category
 {
+    
+    const activo = 1;
+    const papelera = -1;
     /**
      * @ORM\Id
      * @ORM\GeneratedValue
