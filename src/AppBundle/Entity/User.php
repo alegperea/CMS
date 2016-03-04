@@ -42,6 +42,13 @@ class User implements UserInterface
      */
     private $password;
 
+     /**
+     * @var string $salt
+     *
+     * @ORM\Column(name="salt", type="string", length=50)
+     */
+    private $salt;
+    
     /**
      * @ORM\Column(type="json_array")
      */
@@ -106,15 +113,23 @@ class User implements UserInterface
     }
 
     /**
-     * Returns the salt that was originally used to encode the password.
+     * Set salt
+     *
+     * @param string $salt
+     */
+    public function setSalt($salt)
+    {
+        $this->salt = $salt;
+    }
+
+    /**
+     * Get salt
+     *
+     * @return string
      */
     public function getSalt()
     {
-        // See "Do you need to use a Salt?" at http://symfony.com/doc/current/cookbook/security/entity_provider.html
-        // we're using bcrypt in security.yml to encode the password, so
-        // the salt value is built-in and you don't have to generate one
-
-        return;
+        return $this->salt;
     }
 
     /**

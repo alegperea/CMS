@@ -46,23 +46,18 @@ class LoadFixtures implements FixtureInterface, ContainerAwareInterface
 
     private function loadUsers(ObjectManager $manager)
     {
-        $passwordEncoder = $this->container->get('security.password_encoder');
-
-        $johnUser = new User();
-        $johnUser->setUsername('john_user');
-        $johnUser->setEmail('john_user@symfony.com');
-        $encodedPassword = $passwordEncoder->encodePassword($johnUser, '1234');
-        $johnUser->setPassword($encodedPassword);
-        $manager->persist($johnUser);
-
-        $annaAdmin = new User();
-        $annaAdmin->setUsername('admin');
-        $annaAdmin->setEmail('admin@symfony.com');
-        $annaAdmin->setRoles(array('ROLE_ADMIN'));
-        $encodedPassword = $passwordEncoder->encodePassword($annaAdmin, '1234');
-        $annaAdmin->setPassword($encodedPassword);
-        $manager->persist($annaAdmin);
-
+	$userAdmin = new User();
+        $userAdmin->setUsername('admin');;
+        $userAdmin->setEmail('admin@localhost.local');       
+	$userAdmin->setSalt(md5(time()));
+	$passwordEnClaro = 'password';
+	$encoder = $this->container->get('security.encoder_factory')->getEncoder($userAdmin);
+	$passwordCodificado = $encoder->encodePassword($passwordEnClaro, $userAdmin->getSalt());
+	$userAdmin->setPassword($passwordCodificado);
+	$userAdmin->setRoles(array('ROLE_ADMIN'));
+	
+	$manager->persist($userAdmin);
+       
         $manager->flush();
     }
 

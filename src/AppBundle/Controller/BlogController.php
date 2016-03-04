@@ -21,6 +21,7 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use AppBundle\Entity\User;
 
 /**
  * Controller used to manage blog contents in the public part of the site.
@@ -32,6 +33,42 @@ use Symfony\Component\HttpFoundation\Response;
  */
 class BlogController extends Controller
 {
+    
+    
+    /**
+     * @Route("/", name="accion_login", defaults={"page" = 1})
+     * @Route("/acciones/login/{user}/{pass}", name="accion_login") 
+     */
+    public function loginAction($user,$pass){
+        
+        $em = $this->getDoctrine()->getManager();
+        
+        //VERIFICAR USUARIO
+        if (!$user || !$pass) {
+            return new Response(json_encode(array("estado" => "ERROR: URL mal formulada.")));
+        }
+        $objUsuario = $em->getRepository('AppBundle:User')->findOneByUsername($user);
+        if (!$objUsuario) {
+            return new Response(json_encode(array("estado" => "ERROR: El usuario o la contraseña es incorrecta.")));
+        }
+
+
+        $encoder = $this->get('security.encoder_factory')->getEncoder($objUsuario);
+	//$entity->setSalt(md5(time()));
+	$passwordCodificado = $encoder->encodePassword(
+                        $pass, $objUsuario->getSalt()
+                );
+	
+        if ($passwordCodificado != $objUsuario->getPassword()) {
+            return new Response(json_encode(array("estado" => "ERROR: El usuario o la contraseña es incorrecta.")));
+        }
+        
+        
+        $objeto = array("estado" => "OK", "idusuario" => $objUsuario->getId());
+        return new Response(json_encode($objeto));
+    }
+    
+    
     /**
      * @Route("/", name="blog_index", defaults={"page" = 1})
      * @Route("/page/{page}", name="blog_index_paginated", requirements={"page" : "\d+"})
