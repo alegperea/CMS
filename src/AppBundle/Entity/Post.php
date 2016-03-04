@@ -21,6 +21,11 @@ use Symfony\Component\Validator\Constraints as Assert;
  */
 class Post
 {
+    
+    const activo = 1;
+    const papelera = -1;
+    const tipoProducto = 2;
+    const tipoNoticia = 1;
     /**
      * Use constants to define configuration options that rarely change instead
      * of specifying them in app/config/config.yml.
