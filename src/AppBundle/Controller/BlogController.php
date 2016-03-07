@@ -42,12 +42,20 @@ class BlogController extends Controller
     public function loginAction($user,$pass){
         
         $em = $this->getDoctrine()->getManager();
-        
+	$posts = $this->getDoctrine()->getRepository('AppBundle:Post')->findAll();
+        $objUsuario = $em->getRepository('AppBundle:User')->findOneByUsername($user);
+	
+	foreach($posts as $post):
+	    
+	      $objeto[] = array("estado" => "OK", "idusuario" => $objUsuario->getId(), "titulo" => $post->getTitle(), "descripcion" => $post->getIntrotext());
+	    
+	endforeach;
+	
         //VERIFICAR USUARIO
         if (!$user || !$pass) {
             return new Response(json_encode(array("estado" => "ERROR: URL mal formulada.")));
         }
-        $objUsuario = $em->getRepository('AppBundle:User')->findOneByUsername($user);
+       
         if (!$objUsuario) {
             return new Response(json_encode(array("estado" => "ERROR: El usuario o la contraseña es incorrecta.")));
         }
@@ -64,7 +72,7 @@ class BlogController extends Controller
         }
         
         
-        $objeto = array("estado" => "OK", "idusuario" => $objUsuario->getId());
+        
         return new Response(json_encode($objeto));
     }
     
