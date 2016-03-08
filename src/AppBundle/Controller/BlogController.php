@@ -76,6 +76,24 @@ class BlogController extends Controller
         return new Response(json_encode($objeto));
     }
     
+    /**
+     * @Route("/", name="accion_json", defaults={"page" = 1})
+     * @Route("/acciones/json", name="accion_json") 
+     */
+    public function jsonAction(){
+
+	$posts = $this->getDoctrine()->getRepository('AppBundle:Post')->findAll();
+        	
+	foreach($posts as $post):
+	    
+	      $objeto[] = array("titulo" => $post->getTitle(), "descripcion" => $post->getIntrotext());
+	    
+	endforeach;
+	
+        
+        return new Response(json_encode($objeto));
+    }
+    
     
     /**
      * @Route("/", name="blog_index", defaults={"page" = 1})
