@@ -37,10 +37,13 @@ class BlogController extends Controller
     
     /**
      * @Route("/", name="accion_login", defaults={"page" = 1})
-     * @Route("/acciones/login/{user}/{pass}", name="accion_login") 
+     * @Route("/acciones/login/", name="accion_login") 
      */
-    public function loginAction($user,$pass){
+    public function loginAction(Request $request){
         
+	print_r($request->get('username'));
+	exit();
+	
         $em = $this->getDoctrine()->getManager();
 	$posts = $this->getDoctrine()->getRepository('AppBundle:Post')->findAll();
         $objUsuario = $em->getRepository('AppBundle:User')->findOneByUsername($user);
@@ -70,9 +73,7 @@ class BlogController extends Controller
         if ($passwordCodificado != $objUsuario->getPassword()) {
             return new Response(json_encode(array("estado" => "ERROR: El usuario o la contraseña es incorrecta.")));
         }
-        
-        
-        
+               
         return new Response(json_encode($objeto));
     }
     
