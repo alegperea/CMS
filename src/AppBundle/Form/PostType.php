@@ -53,6 +53,7 @@ class PostType extends AbstractType
                
             ->add('category', 'entity', array(
                 'class' => 'AppBundle:Category',
+                'property'=> 'title',
                 'query_builder' => function (EntityRepository $er) {
                   return $er->createQueryBuilder('c')
 			  ->where('c.state = :state')

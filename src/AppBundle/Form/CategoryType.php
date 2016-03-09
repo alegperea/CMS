@@ -21,7 +21,7 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
  * @author Ryan Weaver <weaverryan@gmail.com>
  * @author Javier Eguiluz <javier.eguiluz@gmail.com>
  */
-class PostType extends AbstractType
+class CategoryType extends AbstractType
 {
     /**
      * {@inheritdoc}
@@ -44,10 +44,7 @@ class PostType extends AbstractType
                 'label' => 'label.title',
             ))
             ->add('introText', 'Symfony\Component\Form\Extension\Core\Type\TextareaType', array('label' => 'label.introText'))
-            ->add('body', null, array(
-                'attr' => array('rows' => 20),
-                'label' => 'label.content',
-            ))
+            
             ->add('authorEmail', null, array('label' => 'label.author_email'))
             ->add('publishedAt', 'AppBundle\Form\Type\DateTimePickerType', array(
                 'label' => 'label.published_at',
@@ -61,7 +58,7 @@ class PostType extends AbstractType
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults(array(
-            'data_class' => 'AppBundle\Entity\Post',
+            'data_class' => 'AppBundle\Entity\Category',
         ));
     }
 }

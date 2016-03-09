@@ -49,13 +49,12 @@ class Category
     
     /**
      * @ORM\Column(type="string")
-     * @Assert\NotBlank(message="post.blank_summary")
+     * @Assert\NotBlank(message="post.blank_introtext")
      */
     private $introtext;
 
     /**
-     * @ORM\Column(type="integer")
-     * @Assert\NotBlank(message="post.blank_summary")
+     * @ORM\Column(type="integer")    
      */
     private $state;
     
@@ -140,6 +139,8 @@ class Category
     function setSlug($slug) {
         $this->slug = $slug;
     }
+    
+    
     
      /**
      * Is the given User the author of this Post?

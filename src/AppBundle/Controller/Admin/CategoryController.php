@@ -74,8 +74,9 @@ class CategoryController extends Controller
         // However, we explicitly add it to improve code readability.
         // See http://symfony.com/doc/current/best_practices/forms.html#handling-form-submits
         if ($form->isSubmitted() && $form->isValid()) {        
-            $category->setSlug($this->get('slugger')->slugify($post->getTitle()));
-
+            $category->setSlug($this->get('slugger')->slugify($category->getTitle()));
+            $category->setAlias($this->get('slugger')->slugify($category->getTitle()));
+            $category->setState(Category::activo);
             $entityManager = $this->getDoctrine()->getManager();
             $entityManager->persist($category);
             $entityManager->flush();

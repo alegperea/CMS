@@ -70,8 +70,7 @@ class Post
     private $body;
 
     /**
-     * @ORM\Column(type="integer")
-     * @Assert\NotBlank(message="post.blank_summary")
+     * @ORM\Column(type="integer")    
      */
     private $state;
     
@@ -102,29 +101,7 @@ class Post
      * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Category")
     */
     private $category;
-    
-    
-    /**
-     * @ORM\Column(type="integer", nullable=true)
-     */
-    private $precio;
-    
-    /**
-     * @ORM\Column(type="string", nullable=true)
-    */
-    private $marca;
-    
-    /**
-     * @ORM\Column(type="string", nullable=true)
-    */
-    private $equivalencias;
-    
-    /**
-     * @ORM\Column(type="datetime", nullable=true)
-     * @Assert\DateTime()
-     */
-    private $fechaActualizacion;
-    
+        
     /**
      * @ORM\Column(type="string")
      * @Assert\NotBlank(message="post.blank_summary")
@@ -255,45 +232,11 @@ class Post
     
     function getCategory() {
         return $this->category;
-    }
-
-    function getPrecio() {
-        return $this->precio;
-    }
-
-    function getMarca() {
-        return $this->marca;
-    }
-
-    function getEquivalencias() {
-        return $this->equivalencias;
-    }
-
-    function getFechaActualizacion() {
-        return $this->fechaActualizacion;
-    }
+    }    
 
     function setCategory($category) {
         $this->category = $category;
     }
 
-    function setPrecio($precio) {
-        $this->precio = $precio;
-    }
-
-    function setMarca($marca) {
-        $this->marca = $marca;
-    }
-
-    function setEquivalencias($equivalencias) {
-        $this->equivalencias = $equivalencias;
-    }
-
-    function setFechaActualizacion($fechaActualizacion) {
-        $this->fechaActualizacion = $fechaActualizacion;
-    }
-
-
-    
-    
+ 
 }
