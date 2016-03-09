@@ -45,9 +45,10 @@ class BlogController extends Controller
 	    
 	    print_r('RESQUESTTTTTTTTTTTT'.$request->get('_username'));
 	    
-	    exit();
+	    
 	    
 	}
+	exit();
 	
         $em = $this->getDoctrine()->getManager();
 	$posts = $this->getDoctrine()->getRepository('AppBundle:Post')->findAll();
