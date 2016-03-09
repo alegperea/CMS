@@ -41,8 +41,13 @@ class BlogController extends Controller
      */
     public function loginAction(Request $request){
         
-	print_r($request->get('username'));
-	exit();
+	if ($request->getMethod() == 'POST') {
+	    
+	    print_r('RESQUESTTTTTTTTTTTT'.$request->get('_username'));
+	    
+	    exit();
+	    
+	}
 	
         $em = $this->getDoctrine()->getManager();
 	$posts = $this->getDoctrine()->getRepository('AppBundle:Post')->findAll();
