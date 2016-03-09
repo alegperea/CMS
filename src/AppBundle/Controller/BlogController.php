@@ -44,6 +44,8 @@ class BlogController extends Controller
 	if ($request->getMethod() == 'POST') {
 	    
 	    print_r('RESQUESTTTTTTTTTTTT'.$request->get('_username'));
+	    print "</br>";
+	    print_r('RESQUESTTTTTTTTTTTT'.$request->get('_password'));
 	    
 	    
 	    
