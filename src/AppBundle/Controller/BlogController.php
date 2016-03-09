@@ -40,18 +40,10 @@ class BlogController extends Controller
      * @Route("/acciones/login/", name="accion_login") 
      */
     public function loginAction(Request $request){
-        
-	if ($request->getMethod() == 'POST') {
-	    
-	    print_r('RESQUESTTTTTTTTTTTT'.$request->get('_username'));
-	    print "</br>";
-	    print_r('RESQUESTTTTTTTTTTTT'.$request->get('_password'));
-	    
-	    
-	    
-	}
-	exit();
-	
+      	    
+	$user = $request->get('_username');
+	$pass = $request->get('_password');
+
         $em = $this->getDoctrine()->getManager();
 	$posts = $this->getDoctrine()->getRepository('AppBundle:Post')->findAll();
         $objUsuario = $em->getRepository('AppBundle:User')->findOneByUsername($user);
