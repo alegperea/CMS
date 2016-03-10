@@ -22,6 +22,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use AppBundle\Entity\User;
+use \Firebase\JWT\JWT;
 
 /**
  * Controller used to manage blog contents in the public part of the site.
@@ -44,6 +45,12 @@ class BlogController extends Controller
 	$user = $request->get('_username');
 	$pass = $request->get('_password');
 
+	$decode = JWT::decode($pass, 'password', array('HS256'));
+	
+	print_r('USUARIO:'.$user);
+	print_r('PASSWORD:'.$decode);	
+	exit();
+	
         $em = $this->getDoctrine()->getManager();
 	$posts = $this->getDoctrine()->getRepository('AppBundle:Post')->findAll();
         $objUsuario = $em->getRepository('AppBundle:User')->findOneByUsername($user);
