@@ -44,8 +44,6 @@ class BlogController extends Controller
       	    
 	$user = $request->get('_username');
 	$pass = $request->get('_password');
-
-	$decode = JWT::decode($pass, 'password', array('HS256'));
 	
 	print_r('USUARIO:'.$user);
 	print_r('PASSWORD:'.$decode);	
